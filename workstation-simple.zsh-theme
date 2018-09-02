@@ -30,7 +30,7 @@ ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg[green]%} ☀" # Ⓞ
 
 # Colors {{{
 # see: https://upload.wikimedia.org/wikipedia/commons/1/15/Xterm_256color_chart.svg
-local _colors_prompt_mark=(
+_colors_prompt_mark=(
 "160" # d70000
 "047" # 00ff5f
 "026" # 005fd7
@@ -50,8 +50,9 @@ local _colors_prompt_mark=(
 "yellow"
 "cyan"
 )
-local _color_pwd="244"
-local _color_sha="111"
+
+_color_pwd="244"
+_color_sha="111"
 # }}}
 
 # --------------------------------
@@ -63,7 +64,7 @@ __precmd_render_prompt () {
 
   PROMPT="%(?,,%F{red}[%?]%f)"
   if [[ 0 -eq ${UID} ]]; then
-    PROMPT+="%F{red}#%f}"
+    PROMPT+="%F{red}#%f"
   fi
   PROMPT+="%B"
   PROMPT+="%F{${_colors_prompt_mark[1]}}>"
