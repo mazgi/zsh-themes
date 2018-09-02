@@ -1,33 +1,82 @@
-autoload -Uz vcs_info
+# vim:set foldmethod=marker:
+setopt transient_rprompt
+setopt prompt_subst
+
+add-zsh-hook precmd __precmd_render_prompt
+add-zsh-hook precmd __precmd_render_rprompt
+
 autoload -Uz colors && colors
+autoload -Uz add-zsh-hook
+autoload -Uz vcs_info
+zstyle ':vcs_info:*' enable git
 
-UID_COLOR=${fg[green]}
-case ${UID} in
-0)
-  UID_COLOR=${fg[red]}
-  ;;
-*)
-  ;;
-esac
+# VCS {{{
+# from https://github.com/robbyrussell/oh-my-zsh/blob/master/themes/wedisagree.zsh-theme
+# git_prompt_status
+ZSH_THEME_GIT_PROMPT_ADDED="%{$fg[cyan]%} ✚" # ⓐ ⑃
+ZSH_THEME_GIT_PROMPT_MODIFIED="%{$fg[yellow]%} ⚡"  # ⓜ ⑁
+ZSH_THEME_GIT_PROMPT_DELETED="%{$fg[red]%} ✖" # ⓧ ⑂
+ZSH_THEME_GIT_PROMPT_RENAMED="%{$fg[blue]%} ➜" # ⓡ ⑄
+ZSH_THEME_GIT_PROMPT_UNMERGED="%{$fg[magenta]%} ♒" # ⓤ ⑊
+ZSH_THEME_GIT_PROMPT_AHEAD="%{$fg[blue]%} 𝝙"
 
-HOST_COLOR=0
-I=0
-for c in $(hostname | awk '{len=split($0,str,""); for(i=1; i<=len; i++){print str[i]}}')
-do
-  HOST_COLOR=$((${HOST_COLOR} + $(printf "%d" "'${c}")))
-  I=$((${I} + 1))
-done;
-HOST_COLOR="$(printf "%%F{%03d}@%%f" "$((${HOST_COLOR} / ${I}))")"
+# git_prompt_info
+ZSH_THEME_GIT_PROMPT_PREFIX=""
+ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%} "
+ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[yellow]%} ☂" # Ⓓ
+ZSH_THEME_GIT_PROMPT_UNTRACKED="%{$fg[cyan]%} ✭" # ⓣ
+ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg[green]%} ☀" # Ⓞ
+# }}}
 
-zstyle ':vcs_info:*' formats '(%s)-[%b]'
-zstyle ':vcs_info:*' actionformats '(%s)-[%b|%a]'
-precmd () {
-        psvar=()
-        LANG=en_US.UTF-8 vcs_info
-        [[ -n "$vcs_info_msg_0_" ]] && psvar[1]="$vcs_info_msg_0_"
+# Colors {{{
+# see: https://upload.wikimedia.org/wikipedia/commons/1/15/Xterm_256color_chart.svg
+local _colors_prompt_mark=(
+"160" # d70000
+"047" # 00ff5f
+"026" # 005fd7
+"196" # ff0000
+"178" # dfaf00
+"061" # 5f5faf
+"161" # d7005f
+"098" # 875fd7
+"119" # 87ff5f
+"166" # d75f00
+"021" # 0000ff
+"162" # d70087
+"172" # d78700
+"093" # 8700ff
+"green"
+"magenta"
+"yellow"
+"cyan"
+)
+local _color_pwd="244"
+local _color_sha="111"
+# }}}
+
+# --------------------------------
+# PROMPT
+__precmd_render_prompt () {
+  local _head=${_colors_prompt_mark[1]}
+  shift _colors_prompt_mark
+  _colors_prompt_mark=($_colors_prompt_mark $_head)
+
+  PROMPT="%(?,,%F{red}[%?]%f)"
+  if [[ 0 -eq ${UID} ]]; then
+    PROMPT+="%F{red}#%f}"
+  fi
+  PROMPT+="%B"
+  PROMPT+="%F{${_colors_prompt_mark[1]}}>"
+  PROMPT+="%F{${_colors_prompt_mark[2]}}>"
+  PROMPT+="%F{${_colors_prompt_mark[3]}}>"
+  PROMPT+="%f%b  "
 }
 
-PROMPT="[%{$UID_COLOR%}%n%{${reset_color}%}${HOST_COLOR}%{$reset_color%}%m] %(!.#.$) "
-PROMPT2="%{${fg[blue]}%}%_> %{${reset_color}%}"
-SPROMPT="%{${fg[red]}%}correct: %R -> %r [nyae]? %{${reset_color}%}"
-RPROMPT="%1(v|%F{green}%1v%f|) %{${fg[blue]}%}[%~]%{${reset_color}%}"
+# --------------------------------
+# RPROMPT
+__precmd_render_rprompt () {
+  LANG=en_US.UTF-8 vcs_info
+  RPROMPT="%F{${_color_pwd}}%~%f : $(git_prompt_status) $(git_prompt_info) %F{${_color_sha}}$(git_prompt_short_sha)%f"
+}
+
+PROMPT2="> "
