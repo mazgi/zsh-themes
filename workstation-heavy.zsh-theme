@@ -71,7 +71,7 @@ __precmd_render_prompt () {
   PROMPT+="%F{${_colors_prompt_mark[1]}}>"
   PROMPT+="%F{${_colors_prompt_mark[2]}}>"
   PROMPT+="%F{${_colors_prompt_mark[3]}}>"
-  PROMPT+="%f%b  "
+  PROMPT+="%f%b "
 }
 
 # --------------------------------

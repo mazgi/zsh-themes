@@ -42,7 +42,7 @@ PROMPT+="%B"
 PROMPT+="%F{244}>"
 PROMPT+="%F{255}>"
 PROMPT+="%F{white}>"
-PROMPT+="%f%b  "
+PROMPT+="%f%b "
 
 # --------------------------------
 # RPROMPT
