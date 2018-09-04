@@ -2,8 +2,9 @@
 setopt transient_rprompt
 setopt prompt_subst
 
+PERIOD=2
 add-zsh-hook precmd __precmd_render_prompt
-add-zsh-hook precmd __precmd_render_rprompt
+add-zsh-hook periodic __periodic_render_rprompt
 
 autoload -Uz colors && colors
 autoload -Uz add-zsh-hook
@@ -75,7 +76,7 @@ __precmd_render_prompt () {
 
 # --------------------------------
 # RPROMPT
-__precmd_render_rprompt () {
+__periodic_render_rprompt () {
   LANG=en_US.UTF-8 vcs_info
   RPROMPT="%F{${_color_pwd}}%~%f : $(git_prompt_status) $(git_prompt_info) %F{${_color_sha}}$(git_prompt_short_sha)%f"
 }
