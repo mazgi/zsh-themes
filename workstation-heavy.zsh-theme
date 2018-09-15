@@ -14,12 +14,12 @@ zstyle ':vcs_info:*' enable git
 # VCS {{{
 # from https://github.com/robbyrussell/oh-my-zsh/blob/master/themes/wedisagree.zsh-theme
 # git_prompt_status
-ZSH_THEME_GIT_PROMPT_ADDED="%{$fg[cyan]%} ✚" # ⓐ ⑃
-ZSH_THEME_GIT_PROMPT_MODIFIED="%{$fg[yellow]%} ⚡"  # ⓜ ⑁
-ZSH_THEME_GIT_PROMPT_DELETED="%{$fg[red]%} ✖" # ⓧ ⑂
-ZSH_THEME_GIT_PROMPT_RENAMED="%{$fg[blue]%} ➜" # ⓡ ⑄
-ZSH_THEME_GIT_PROMPT_UNMERGED="%{$fg[magenta]%} ♒" # ⓤ ⑊
-ZSH_THEME_GIT_PROMPT_AHEAD="%{$fg[blue]%} 𝝙"
+ZSH_THEME_GIT_PROMPT_ADDED="%{$fg[cyan]%} +"
+ZSH_THEME_GIT_PROMPT_MODIFIED="%{$fg[yellow]%} m"
+ZSH_THEME_GIT_PROMPT_DELETED="%{$fg[red]%} -"
+ZSH_THEME_GIT_PROMPT_RENAMED="%{$fg[blue]%} r"
+ZSH_THEME_GIT_PROMPT_UNMERGED="%{$fg[magenta]%} ~"
+ZSH_THEME_GIT_PROMPT_AHEAD="%{$fg[blue]%} ^"
 
 # git_prompt_info
 ZSH_THEME_GIT_PROMPT_PREFIX=""
